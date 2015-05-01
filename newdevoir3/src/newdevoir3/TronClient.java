@@ -1,5 +1,6 @@
 package newdevoir3;
 
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -31,6 +32,18 @@ public class TronClient {
 				}
 	}
 	
+	
+	public void addPlayer(String login, String nom_de_machine, String couleur, String xDepart, String yDepart){
+		TronPlayer newPlayer = new TronPlayer(login, nom_de_machine, couleur, xDepart, yDepart);
+		players.add(newPlayer);
+	}
+	
+	/**
+	 * Reinitialize la liste de players
+	 */
+	public void resetPlayerList(){
+		players=new ArrayList<TronPlayer>();
+	}
 	
 	public static void main(String[] args){
 			
