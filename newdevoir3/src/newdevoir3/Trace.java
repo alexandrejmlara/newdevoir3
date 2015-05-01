@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Trace {
 
 	public int positionX, positionY, longueur;
-	public ArrayList<Point> trace;
+	public ArrayList<Point> points;
 	
 	public Trace(int initialX, int initialY){
 			
@@ -14,8 +14,8 @@ public class Trace {
 			
 			Point p = new Point (initialX,initialY);
 			
-			this.trace = new ArrayList<Point>();
-			this.trace.add(p);
+			this.points = new ArrayList<Point>();
+			this.points.add(p);
 			
 			this.longueur = 1;
 	}
@@ -28,25 +28,25 @@ public class Trace {
 				case 'n': // direction vers le haut
 					x = positionX;
 					y = positionY - 1;
-					this.trace.add(new Point(x, y));
+					this.points.add(new Point(x, y));
 					this.longueur++;
 					break;
 				case 'w': // direction vers la gauche (west)
 					x = positionX - 1;
 					y = positionY;
-					this.trace.add(new Point(x, y));
+					this.points.add(new Point(x, y));
 					this.longueur++;
 					break;
 				case 's': // direction vers le bas
 					x = positionX;
 					y = positionY + 1;
-					this.trace.add(new Point(x, y));
+					this.points.add(new Point(x, y));
 					this.longueur++;
 					break;
 				case'e': // direction vers la droite (east)
 					x = positionX + 1;
 					y = positionY;
-					this.trace.add(new Point(x, y));
+					this.points.add(new Point(x, y));
 					this.longueur++;
 					break;
 				default:
