@@ -36,7 +36,6 @@ public class Trace {
 	 */
 	public void allonger(char direction) {
 			
-			
 			switch(direction){
 				case 'n': // direction vers le haut
 					positionY--;

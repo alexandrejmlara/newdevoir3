@@ -42,10 +42,12 @@ public class JAreneTron extends JComponent {
 			for ( Point point : player.trace.points ) { // poue chaque point
 				
 				if( firstPoint ){
+					System.out.println(point.coordonneeX + " " + point.coordonneeY);
 					g2.drawOval(point.coordonneeX, point.coordonneeY, 1, 1);
 					firstPoint = false;
 				}
 				else {
+					System.out.println(beforePoint.coordonneeX + " " + beforePoint.coordonneeX + " : " + point.coordonneeX + " " + point.coordonneeY);
 					g2.drawLine(beforePoint.coordonneeX, beforePoint.coordonneeY, point.coordonneeX, point.coordonneeY);
 				}
 				
