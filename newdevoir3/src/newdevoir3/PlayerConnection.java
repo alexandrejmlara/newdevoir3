@@ -108,6 +108,9 @@ public class PlayerConnection implements Runnable {
 			//découvrir le nom de machine du client
 			hostname = clientSocket.getInetAddress().getHostName();
 			
+			System.out.println(login + " : " + hostname);
+			System.out.flush();
+			
 			//
 			/********************************fazer uma execao que presta, pfvr*******************************/	
 		} catch (IOException e) {
@@ -120,6 +123,7 @@ public class PlayerConnection implements Runnable {
 			try {
 				String message = in.readLine();
 				
+				System.out.println( message );
 				if( !isPlayerDead ) direction = message.charAt(0);
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -45,64 +45,14 @@ public class TronHeartBeat implements Runnable {
 		this.gridheight = gridheight;
 		pointsAvailable = new boolean[gridwidth][gridheight];
 		
+		System.out.println("Initializing server...");
 		try { 
 			// Initializing the server TCP socket
 			serverSocket = new ServerSocket(serverPort);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		// Accept incoming connections while game doesn't start
-		while( !isGameStarted ){
-			
-			Socket clientSocket = null;
-				
-			try {
-				// If 2 players or more in the game, wait for only 10 seconds
-				if ( connections.size() > 1 ) serverSocket.setSoTimeout (10000); 
-				
-				// Accepting connections
-				clientSocket = serverSocket.accept();
-				
-				// Creating a player connection and adding it to the list of connections
-				PlayerConnection pc = new PlayerConnection(clientSocket, gridwidth, gridheight);
-				connections.add(pc);
-				
-				// Creating a thread and adding it to the list of threads
-				Thread th = new Thread(pc);
-				th.start();
-				connectionsThreads.add(th);
-			} catch ( SocketTimeoutException ste ) {
-				ste.printStackTrace();
-				System.out.println("The game is starting now.");
-				
-				// Sending width and height to all players
-				sendMessageToAll(String.valueOf(gridwidth));
-				sendMessageToAll(String.valueOf(gridheight));
-				
-				// Sending player info to all players
-				sendPlayerInfoToAll();
-				
-				isGameStarted = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ConnectionException e) {
-				e.printStackTrace();
-			}		
-			
-		}
-		
-		// Game started
-		while(true){
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			moveAllPlayers();
-			sendDirectionToAll();
-		}
-		
+		System.out.println("Server initialized...");
 		
 	}
 	
@@ -126,6 +76,7 @@ public class TronHeartBeat implements Runnable {
 		for ( PlayerConnection player : connections ){
 			player.sendMessage(message);
 		}
+		System.out.println( "Message \'" + message + "\' " + "sent do all players" );
 		
 	}
 	
@@ -133,6 +84,7 @@ public class TronHeartBeat implements Runnable {
 		for ( PlayerConnection player : connections ){
 			if( !player.isPlayerDead ) player.move();
 		}
+		System.out.println( "Moving all players" );
 	}
 	
 	private void sendDirectionToAll(){
@@ -140,7 +92,7 @@ public class TronHeartBeat implements Runnable {
 		for ( PlayerConnection player : connections ){
 			message += player.direction;
 		}
-
+		System.out.println( "Sending direction \' " + message + " \' to all players" );
 		sendMessageToAll(message);
 	}
 	
@@ -160,10 +112,11 @@ public class TronHeartBeat implements Runnable {
 			
 			// Setting current position of each player on the server
 			player.positionX = positionX;
-			player.positionY = positionY;
-			
-			
+			player.positionY = positionY;			
 		}
+		
+		System.out.println( "Player info sent to all players..." );
+		
 	}
 	
 	private Color generatePlayerColor(){
@@ -208,7 +161,57 @@ public class TronHeartBeat implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		// Accept incoming connections while game doesn't start
+		while( !isGameStarted ){
+			
+			Socket clientSocket = null;
+				
+			try {
+				// If 2 players or more in the game, wait for only 10 seconds
+				if ( connections.size() > 1 ) serverSocket.setSoTimeout (10000); 
+				
+				// Accepting connections
+				clientSocket = serverSocket.accept();
+				System.out.println("Client connection accepted...");
+				
+				// Creating a player connection and adding it to the list of connections
+				PlayerConnection pc = new PlayerConnection(clientSocket, gridwidth, gridheight);
+				connections.add(pc);
+				
+				// Creating a thread and adding it to the list of threads
+				Thread th = new Thread(pc);
+				th.start();
+				connectionsThreads.add(th);
+			} catch ( SocketTimeoutException ste ) {
+				ste.printStackTrace();
+				System.out.println("The game is starting now.");
+				
+				// Sending width and height to all players
+				sendMessageToAll(String.valueOf(gridwidth));
+				sendMessageToAll(String.valueOf(gridheight));
+				
+				// Sending player info to all players
+				sendPlayerInfoToAll();
+				
+				isGameStarted = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ConnectionException e) {
+				e.printStackTrace();
+			}		
+			
+		}
+		
+		// Game started
+		while(true){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			moveAllPlayers();
+			sendDirectionToAll();
+		}
 		
 	}
 }
