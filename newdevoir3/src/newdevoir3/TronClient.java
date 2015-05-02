@@ -28,6 +28,8 @@ public class TronClient implements KeyListener {
 	String address; 
 	int port;
 	
+	JAreneTron component;
+	
 	Socket socket=null;
     BufferedReader in=null;
     PrintWriter out=null;
@@ -64,13 +66,15 @@ public class TronClient implements KeyListener {
 		frame.setTitle("Jeu de Tron");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                
-		JAreneTron component = new JAreneTron(500,500, this);
+		component = new JAreneTron(500,500, this);
+		component.addKeyListener(this);
+		component.setFocusable(true);
 			
 		JPanel p = new JPanel();
 		   
 		p.setLayout(new BorderLayout());
 		p.add(component, BorderLayout.CENTER);
-		   
+		p.addKeyListener(this);   
 		// Affichage des noms d'utilisateur et de leur machine
 		for(int i=0; i < players.size(); i++){
 			JLabel noms = new JLabel(username+"@"+machineHostName);
@@ -176,12 +180,12 @@ public class TronClient implements KeyListener {
 					System.out.flush();
 					addPlayer(username, nom_de_machine, couleur, xDepart, yDepart);
 					
-					/*-----------------------------------FALTA PARTE GRAFICA 4.6-------------------------------*/
+					component.repaint();
 				}
 				if(FirstLine.charAt(0)=='R'){
 					resetPlayerList();
 					
-					/*-----------------------------------FALTA PARTE GRAFICA 4.6-------------------------------*/
+					component.repaint();
 				}
 			
 			} catch (IOException e) {
