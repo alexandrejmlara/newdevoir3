@@ -21,9 +21,9 @@ public class TronClient implements KeyListener {
 	
 	String username;
 	String machineHostName;
-	String userColor;
-	String xStartPoint;
-	String yStartPoint;
+	Color userColor;
+	int xStartPoint;
+	int yStartPoint;
 	
 	String address; 
 	int port;
