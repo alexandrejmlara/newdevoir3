@@ -12,8 +12,13 @@ public class PlayerConnection implements Runnable {
 	String hostname;
 	char direction;
 	boolean isPartieEnCours;
+	boolean isPlayerDead;
 	int gridwidth; 
 	int gridheight;
+	
+	// Current position
+	int positionX;
+	int positionY;
 	
 	private Socket clientSocket;
 	private BufferedReader in;
@@ -29,6 +34,7 @@ public class PlayerConnection implements Runnable {
 		 this.clientSocket = clientSocket;
 		 this.gridwidth=gridwidth;
 		 this.gridheight=gridheight;
+		 isPlayerDead = false;
 		 
 		 
 		 try {
@@ -59,6 +65,38 @@ public class PlayerConnection implements Runnable {
 		out.println(message);
 		out.flush();
 	}
+	
+	public void move(){
+		
+		switch(direction){
+			case 'n': // direction vers le haut
+				positionY--;
+				break;
+			case 'w': // direction vers la gauche (west)
+				positionX--;
+				break;
+			case 's': // direction vers le bas
+				positionY++;
+				break;
+			case'e': // direction vers la droite (east)
+				positionX++;
+				break;
+			default:
+				System.out.println("commande invalide");
+		}
+		
+		// Checking if one position hit another position		
+		if ( TronHeartBeat.pointsAvailable[positionX][positionY] || 
+				positionX < 0 || positionX > gridwidth || 
+				positionY < 0 || positionY > gridheight ) {
+			isPlayerDead = true;
+			direction = 'x';
+		}
+			
+		TronHeartBeat.pointsAvailable[positionX][positionY] = true; 
+		
+		
+	}
 
 	@Override
 	public void run() {
@@ -82,18 +120,13 @@ public class PlayerConnection implements Runnable {
 			try {
 				String message = in.readLine();
 				
-				// Do some action based on the message
-				solveMessage(message);
+				if( !isPlayerDead ) direction = message.charAt(0);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 		}
 	      
-		
-	}
-
-	private void solveMessage(String message){
 		
 	}
 

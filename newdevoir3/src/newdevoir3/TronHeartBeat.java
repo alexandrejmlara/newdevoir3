@@ -93,7 +93,15 @@ public class TronHeartBeat implements Runnable {
 		}
 		
 		// Game started
-		
+		while(true){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			moveAllPlayers();
+			sendDirectionToAll();
+		}
 		
 		
 	}
@@ -121,6 +129,12 @@ public class TronHeartBeat implements Runnable {
 		
 	}
 	
+	private void moveAllPlayers(){
+		for ( PlayerConnection player : connections ){
+			if( !player.isPlayerDead ) player.move();
+		}
+	}
+	
 	private void sendDirectionToAll(){
 		String message = "s";
 		for ( PlayerConnection player : connections ){
@@ -143,6 +157,11 @@ public class TronHeartBeat implements Runnable {
 			pointsAvailable[positionX][positionY] = true; // Setting position occupied
 			sendMessageToAll(String.valueOf(positionX));
 			sendMessageToAll(String.valueOf(positionY));
+			
+			// Setting current position of each player on the server
+			player.positionX = positionX;
+			player.positionY = positionY;
+			
 			
 		}
 	}
