@@ -183,7 +183,7 @@ public class TronHeartBeat implements Runnable {
 				th.start();
 				connectionsThreads.add(th);
 			} catch ( SocketTimeoutException ste ) {
-				ste.printStackTrace();
+				//ste.printStackTrace();
 				System.out.println("The game is starting now.");
 				
 				// Sending width and height to all players
@@ -200,6 +200,11 @@ public class TronHeartBeat implements Runnable {
 				e.printStackTrace();
 			}		
 			
+		}
+		
+		// Set direction of all to North
+		for ( PlayerConnection player : connections ){
+			player.direction = 'n';			
 		}
 		
 		// Game started
