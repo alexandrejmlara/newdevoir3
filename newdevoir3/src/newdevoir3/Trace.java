@@ -36,31 +36,26 @@ public class Trace {
 	 */
 	public void allonger(char direction) {
 			
-			int x, y;
 			
 			switch(direction){
 				case 'n': // direction vers le haut
-					x = positionX;
-					y = positionY - 1;
-					this.points.add(new Point(x, y));
+					positionY--;
+					this.points.add(new Point(positionX, positionY));
 					this.longueur++;
 					break;
 				case 'w': // direction vers la gauche (west)
-					x = positionX - 1;
-					y = positionY;
-					this.points.add(new Point(x, y));
+					positionX--;
+					this.points.add(new Point(positionX, positionY));
 					this.longueur++;
 					break;
 				case 's': // direction vers le bas
-					x = positionX;
-					y = positionY + 1;
-					this.points.add(new Point(x, y));
+					positionY++;
+					this.points.add(new Point(positionX, positionY));
 					this.longueur++;
 					break;
 				case'e': // direction vers la droite (east)
-					x = positionX + 1;
-					y = positionY;
-					this.points.add(new Point(x, y));
+					positionX++;
+					this.points.add(new Point(positionX, positionY));
 					this.longueur++;
 					break;
 				default:

@@ -31,7 +31,7 @@ public class JAreneTron extends JComponent {
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g.create();
+		Graphics2D g2 = (Graphics2D) g;
 		
 		for ( TronPlayer player : client.players ){ // pour chaque joueur
 			
