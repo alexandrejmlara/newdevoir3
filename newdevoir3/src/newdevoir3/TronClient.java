@@ -105,7 +105,7 @@ public class TronClient implements KeyListener {
 				System.exit(1);
 			}
 			// Envoyez le nom d'utilisateur au serveur
-			out.println(username+"\n");
+			out.println(username);
 			out.flush();
 			System.out.println("nom d'utilizateur de "+username+" envouyé au serveur");
 			System.out.flush();
