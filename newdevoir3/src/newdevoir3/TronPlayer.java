@@ -24,7 +24,8 @@ public class TronPlayer {
 		
 		this.nonUtilisateur = nomUtilisateur;
 		this.nomMachine = nomMachine;
-		this.couleur = Color.decode(couleur);
+		
+		this.couleur= new Color (Integer.parseInt(couleur));
 		this.positionDepartX = Integer.parseInt("positionDepartX");
 		this.positionDepartY = Integer.parseInt("positionDepartY");
 		
