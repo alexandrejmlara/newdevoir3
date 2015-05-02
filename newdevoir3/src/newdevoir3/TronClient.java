@@ -65,10 +65,6 @@ public class TronClient implements KeyListener {
 		frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		frame.setTitle("Jeu de Tron");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	                
-		component = new JAreneTron(500,500, this);
-		component.addKeyListener(this);
-		component.setFocusable(true);
 			
 		JPanel p = new JPanel();
 		   
@@ -119,6 +115,10 @@ public class TronClient implements KeyListener {
 			this.gridwidth=Integer.parseInt(answer1);
 			this.gridheight=Integer.parseInt(answer2);
 			System.out.println("Serveur : \n"+answer1+"\n"+answer2);
+            
+			component = new JAreneTron(gridwidth, gridheight, this);
+			component.addKeyListener(this);
+			component.setFocusable(true);
 		}
 		catch (IOException e) { // pour TRY PROTOCOLE
 					System.err.println("Exception: I/O error trying to talk to server: "+ e);
@@ -166,8 +166,10 @@ public class TronClient implements KeyListener {
 				System.out.flush();
 				if(FirstLine.charAt(0)=='s'){
 					for(int i =1;i<FirstLine.length(); i++){
-						if(FirstLine.charAt(i)!='x'||FirstLine.charAt(i)!='X')
+						if(FirstLine.charAt(i)!='x'||FirstLine.charAt(i)!='X'){
 							players.get(i-1).trace.allonger(FirstLine.charAt(i));
+							component.repaint();
+						}
 					}
 				}
 				else if(FirstLine.charAt(0)=='+'){
