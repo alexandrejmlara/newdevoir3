@@ -81,6 +81,8 @@ public class PlayerConnection implements Runnable {
 			case'e': // direction vers la droite (east)
 				positionX++;
 				break;
+			case 'x':
+				break;				
 			default:
 				System.out.println("commande invalide");
 		}
