@@ -8,11 +8,16 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-
+/**
+ * classe qui comporte le programme principal du client
+ */
 public class TronClient implements KeyListener {
 
+	//les dimensions de la grille de jeu virtuelle
 	int gridwidth;
 	int gridheight;
+	//une liste de TronPlayer, qui contiendra tous les joueurs de la partie en cours
+	ArrayList<TronPlayer> players;
 	
 	String username;
 	String machineHostName;
@@ -23,20 +28,24 @@ public class TronClient implements KeyListener {
 	String address; 
 	int port;
 	
-	ArrayList<TronPlayer> players;
-	
 	Socket socket=null;
     BufferedReader in=null;
     PrintWriter out=null;
 	
+    /**
+     * constructeur de TronClient
+     * @param serverHostName
+     * @param serverPort
+     */
 	public TronClient(String serverHostName, int serverPort){
 		
 		address = serverHostName;
 		port=serverPort;
 		
+		//initialise le tableau ou la liste de TronPlayer
 		players=new ArrayList<TronPlayer>();
 		
-		//chercher le nom de votre machine et le nom de l'utilisateur 
+		//cherche le nom de votre machine et le nom de l'utilisateur 
 		this.username = System.getProperty("user.name");
 		try {
 			this.machineHostName=InetAddress.getLocalHost().getHostName();
@@ -45,6 +54,7 @@ public class TronClient implements KeyListener {
 				e1.printStackTrace();
 			}
 /*******************Composantes Graphiques***********************/
+		//créer un JFrame munie d'un layout de type BorderLayout
 		JFrame frame = new JFrame();
 		       
 		final int FRAME_WIDTH = 1000;
@@ -105,9 +115,6 @@ public class TronClient implements KeyListener {
 			this.gridwidth=Integer.parseInt(answer1);
 			this.gridheight=Integer.parseInt(answer2);
 			System.out.println("Serveur : \n"+answer1+"\n"+answer2);
-				      
-				      
-
 		}
 		catch (IOException e) { // pour TRY PROTOCOLE
 					System.err.println("Exception: I/O error trying to talk to server: "+ e);
@@ -122,23 +129,34 @@ public class TronClient implements KeyListener {
 									
 	}
 	
-	
+	/**
+	 *  methode qui ajoute un nouveau joueur à sa liste.
+	 * @param login
+	 * @param nom_de_machine
+	 * @param couleur
+	 * @param xDepart
+	 * @param yDepart
+	 */
 	public void addPlayer(String login, String nom_de_machine, String couleur, String xDepart, String yDepart){
 		TronPlayer newPlayer = new TronPlayer(login, nom_de_machine, couleur, xDepart, yDepart);
 		players.add(newPlayer);
 	}
 	
 	/**
-	 * Reinitialize la liste de players
+	 * methode qui initialize la liste de players
 	 */
 	public void resetPlayerList(){
 		players=new ArrayList<TronPlayer>();
 	}
 
+	/**
+	 * méthode qui, en boucle infinie, lit une ligne du serveur, puis gère la commande ainsi reçue.
+	 */
 	public void handleServerMessages() {
 		//boucle infinie
 		while(true){
 			try {
+				//on lit la premiere ligne et vérifie son premier caractere
 				String FirstLine = in.readLine();
 				System.out.println("Serveur : \n"+FirstLine);
 				System.out.flush();
@@ -173,6 +191,9 @@ public class TronClient implements KeyListener {
 	}
 
 /*******************Réaction aux touches***********************/
+	/**
+	 * methode pour récupérer le caractère de la touche appuyée 
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
@@ -200,7 +221,11 @@ public class TronClient implements KeyListener {
 
 /****************FIN - Réaction aux touches********************/
 
-	
+	/**
+	 * fonction static main() de TronClient qui se limite à récupérer les paramètres de ligne de commande, 
+	 * et instancie un objet de type TronClient en lui passant ces paramètres.
+	 * @param args
+	 */
   	public static void main (String[] args){
 		
 		//on verifie s'il y a seulement 2 elements en args, si oui, on instancie un objet type TronClient
