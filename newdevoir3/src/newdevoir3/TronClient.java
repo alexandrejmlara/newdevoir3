@@ -167,7 +167,7 @@ public class TronClient implements KeyListener {
 				if(FirstLine.charAt(0)=='s'){
 					for(int i =1;i<FirstLine.length(); i++){
 						if(FirstLine.charAt(i)!='x'||FirstLine.charAt(i)!='X')
-							players.get(i).trace.allonger(FirstLine.charAt(i));
+							players.get(i-1).trace.allonger(FirstLine.charAt(i));
 					}
 				}
 				else if(FirstLine.charAt(0)=='+'){
