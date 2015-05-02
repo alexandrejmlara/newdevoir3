@@ -26,8 +26,8 @@ public class TronPlayer {
 		this.nomMachine = nomMachine;
 		
 		this.couleur= new Color (Integer.parseInt(couleur));
-		this.positionDepartX = Integer.parseInt("positionDepartX");
-		this.positionDepartY = Integer.parseInt("positionDepartY");
+		this.positionDepartX = Integer.parseInt(positionDepartX);
+		this.positionDepartY = Integer.parseInt(positionDepartY);
 		
 		this.trace = new Trace(this.positionDepartX, this.positionDepartY);
 	}
