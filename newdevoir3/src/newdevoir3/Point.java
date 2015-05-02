@@ -1,5 +1,9 @@
 package newdevoir3;
 
+/**
+ * classe pour représenter des points avec leurs coordonnées entières dans la grille de jeu virtuelle.
+ *
+ */
 public class Point {
 
 public int coordonneeX, coordonneeY;

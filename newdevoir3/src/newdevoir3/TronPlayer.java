@@ -1,7 +1,9 @@
 package newdevoir3;
 
 import java.awt.Color;
-
+/**
+ * classe qui contient toute l'information sur un joueur
+ */
 public class TronPlayer {
 	
 	public String nonUtilisateur, nomMachine; // nom utilisateur et nom machine

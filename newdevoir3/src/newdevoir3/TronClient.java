@@ -1,15 +1,13 @@
 package newdevoir3;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
+
+import javax.swing.*;
+
 
 public class TronClient implements KeyListener {
 
@@ -46,6 +44,32 @@ public class TronClient implements KeyListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+/*******************Composantes Graphiques***********************/
+		JFrame frame = new JFrame();
+		       
+		final int FRAME_WIDTH = 1000;
+		final int FRAME_HEIGHT = 600;
+		       
+		frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		frame.setTitle("Jeu de Tron");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                
+		JAreneTron component = new JAreneTron(500,500, this);
+			
+		JPanel p = new JPanel();
+		   
+		p.setLayout(new BorderLayout());
+		p.add(component, BorderLayout.CENTER);
+		   
+		// Affichage des noms d'utilisateur et de leur machine
+		for(int i=0; i < players.size(); i++){
+			JLabel noms = new JLabel(username+"@"+machineHostName);
+			p.add(noms, BorderLayout.EAST);
+		}
+		   
+		frame.add(p);
+		p.setBackground(Color.black);
+		frame.setVisible(true);
 				
 /*******************Comunication Reauseau***********************/
 		//Établissez la socket de connection au serveur, et construisez les stream 
@@ -91,7 +115,7 @@ public class TronClient implements KeyListener {
 
 /****************FIN - Comunication Reauseau********************/
 				
-/*--------------------FALTA PARTE GRAFICA 4.5--------------------*/
+/*-----------------------------------FALTA PARTE GRAFICA 4.5-------------------------------*/
 		
 		//appel à la méthode
 		handleServerMessages();
@@ -120,7 +144,8 @@ public class TronClient implements KeyListener {
 				System.out.flush();
 				if(FirstLine.charAt(0)=='s'){
 					for(int i =1;i<FirstLine.length(); i++){
-						players.get(i).trace.allonger(FirstLine.charAt(i));
+						if(FirstLine.charAt(i)!='x'||FirstLine.charAt(i)!='X')
+							players.get(i).trace.allonger(FirstLine.charAt(i));
 					}
 				}
 				else if(FirstLine.charAt(0)=='+'){
@@ -132,9 +157,13 @@ public class TronClient implements KeyListener {
 					System.out.println(nom_de_machine+"\n"+couleur+"\n"+xDepart+"\n"+yDepart);
 					System.out.flush();
 					addPlayer(username, nom_de_machine, couleur, xDepart, yDepart);
+					
+					/*-----------------------------------FALTA PARTE GRAFICA 4.6-------------------------------*/
 				}
 				if(FirstLine.charAt(0)=='R'){
 					resetPlayerList();
+					
+					/*-----------------------------------FALTA PARTE GRAFICA 4.6-------------------------------*/
 				}
 			
 			} catch (IOException e) {
@@ -147,7 +176,22 @@ public class TronClient implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
-		System.out.println(c);
+		if(c=='e'||c=='E'){
+			out.println("n");
+			out.flush();
+		}
+		else if (c=='x'||c=='X'){
+			out.println("s");
+			out.flush();
+		}
+		else if (c=='s'||c=='S'){
+			out.println("e");
+			out.flush();
+		}
+		else if (c=='d'||c=='D'){
+			out.println("w");
+			out.flush();
+		}
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {}
@@ -155,8 +199,7 @@ public class TronClient implements KeyListener {
 	public void keyReleased(KeyEvent e) {}
 
 /****************FIN - Réaction aux touches********************/
-	
-	
+
 	
   	public static void main (String[] args){
 		
